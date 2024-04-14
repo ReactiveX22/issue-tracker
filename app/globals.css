@@ -5,3 +5,13 @@
 
 @tailwind components;
 @tailwind utilities;
+
+body {
+  color: rgb(var(--foreground-rgb));
+}
+
+@layer utilities {
+  .nav-link {
+    @apply text-zinc-500 transition-colors hover:text-zinc-900;
+  }
+}
