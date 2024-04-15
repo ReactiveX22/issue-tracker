@@ -27,11 +27,10 @@ const IssueTable = ({ issues, searchParams }: Props) => {
             >
               <Link
                 href={{ query: { ...searchParams, orderBy: column.value } }}
+                className='flex place-items-center gap-1'
               >
                 {column.label}
-                {column.value === searchParams.orderBy && (
-                  <ArrowUpIcon class='inline' />
-                )}
+                {column.value === searchParams.orderBy && <ArrowUpIcon />}
               </Link>
             </Table.ColumnHeaderCell>
           ))}
