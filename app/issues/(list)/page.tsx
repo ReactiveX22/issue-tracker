@@ -1,51 +1,60 @@
 import prisma from '@/prisma/client';
-import { Table } from '@radix-ui/themes';
 import IssueActions from './IssueActions';
+import Pagination from '@/app/components/Pagination';
+import { Status } from '@prisma/client';
+import IssueTable, { columnNames, IssueQuery } from './IssueTable';
+import { Flex } from '@radix-ui/themes';
+import { Metadata } from 'next';
 
-import { IssueLink, IssueStatusBadge } from '@/app/components';
+interface Props {
+  searchParams: IssueQuery;
+}
 
-const page = async () => {
-  const issues = await prisma.issue.findMany();
+const IssuesPage = async ({ searchParams }: Props) => {
+  const statues = Object.values(Status);
+  const status = statues.includes(searchParams.status)
+    ? searchParams.status
+    : undefined;
+
+  const where = {
+    status,
+  };
+
+  const orderBy = columnNames.includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: 'asc' }
+    : undefined;
+
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
+
+  const issues = await prisma.issue.findMany({
+    where: where,
+    orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  const issueCount = await prisma.issue.count({ where: where });
   return (
-    <div>
+    <Flex direction='column' gap='3'>
       <IssueActions />
 
-      <Table.Root variant='surface'>
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className='hidden md:table-cell'>
-              Status
-            </Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className='hidden md:table-cell'>
-              Created
-            </Table.ColumnHeaderCell>
-          </Table.Row>
-        </Table.Header>
+      <IssueTable issues={issues} searchParams={searchParams} />
 
-        <Table.Body>
-          {issues.map((issue) => (
-            <Table.Row key={issue.id}>
-              <Table.RowHeaderCell>
-                <IssueLink href={`/issues/${issue.id}`}>
-                  {issue.title}
-                </IssueLink>
-                <div className='block md:hidden'>
-                  <IssueStatusBadge status={issue.status} />
-                </div>
-              </Table.RowHeaderCell>
-              <Table.Cell className='hidden md:table-cell'>
-                <IssueStatusBadge status={issue.status} />
-              </Table.Cell>
-              <Table.Cell className='hidden md:table-cell'>
-                {issue.createdAt.toDateString()}
-              </Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table.Root>
-    </div>
+      <Pagination
+        currentPage={page}
+        pageSize={pageSize}
+        itemCount={issueCount}
+      />
+    </Flex>
   );
 };
 
-export default page;
+export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Issue Tracker - Issues',
+  description: 'View all issues',
+};
+
+export default IssuesPage;

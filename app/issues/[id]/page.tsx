@@ -39,6 +39,15 @@ const IssueDetailPage = async ({ params }: Props) => {
   );
 };
 
-export const dynamic = 'force-dynamic';
+export async function generateMetadata({ params }: Props) {
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  return {
+    title: issue?.title,
+    description: 'Details of the issue',
+  };
+}
 
 export default IssueDetailPage;
