@@ -1,11 +1,10 @@
 'use client';
 
 import ErrorMessage from '@/app/components/ErrorMessage';
-import Spinner from '@/app/components/Spinner';
 import { issueSchema } from '@/app/validationSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
-import { Button, Callout, TextField } from '@radix-ui/themes';
+import { Button, Callout, Spinner, TextField } from '@radix-ui/themes';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -27,7 +26,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     resolver: zodResolver(issueSchema),
   });
   const [error, setError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(true);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -81,7 +80,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
 
         <Button disabled={isSubmitting}>
           {issue ? 'Update Issue' : 'Submit Issue'}{' '}
-          {isSubmitting && <Spinner />}
+          <Spinner loading={isSubmitting} />
         </Button>
       </form>
     </div>

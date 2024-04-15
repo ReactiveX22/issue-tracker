@@ -1,7 +1,5 @@
 'use client';
-import { Spinner } from '@/app/components';
-import { TrashIcon } from '@radix-ui/react-icons';
-import { AlertDialog, Button, Flex } from '@radix-ui/themes';
+import { AlertDialog, Button, Flex, Spinner } from '@radix-ui/themes';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -27,8 +25,7 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
       <AlertDialog.Root>
         <AlertDialog.Trigger>
           <Button color='red' disabled={isDeleting}>
-            {isDeleting && <Spinner />}
-            <TrashIcon />
+            <Spinner loading={isDeleting} />
             Delete Issue
           </Button>
         </AlertDialog.Trigger>
