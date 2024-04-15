@@ -91,9 +91,11 @@ const AuthStatus = () => {
           <DropdownMenu.Label>
             <Text size='2'>{session!.user!.email}</Text>
           </DropdownMenu.Label>
-          <DropdownMenu.Item>
-            <Link href='/api/auth/signout'>Signout</Link>
-          </DropdownMenu.Item>
+          <Link href='/api/auth/signout'>
+            <DropdownMenu.Item className='cursor-pointer'>
+              Signout
+            </DropdownMenu.Item>
+          </Link>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     </Box>
