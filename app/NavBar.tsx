@@ -21,7 +21,7 @@ interface Links {
 
 const NavBar = () => {
   return (
-    <nav className='mb-5 border-b px-5 py-3'>
+    <nav className='mb-5 border-b px-5 py-3 shadow-md'>
       <Container>
         <Flex justify='between'>
           <Flex align='center' gap='3'>
@@ -70,7 +70,10 @@ const AuthStatus = () => {
 
   if (status === 'unauthenticated')
     return (
-      <Link className='nav-link font-medium' href='/api/auth/signin'>
+      <Link
+        className='nav-link font-medium text-[var(--accent-9)]'
+        href='/api/auth/signin'
+      >
         Sign In
       </Link>
     );

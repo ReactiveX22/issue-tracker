@@ -34,7 +34,7 @@ const IssueChart = ({ open, inProgress, closed }: Props) => {
   ];
 
   return (
-    <Card className=' p-2 text-xs'>
+    <Card className=' p-2 text-xs shadow-sm'>
       <ResponsiveContainer width='100%' height={250} className='py-1'>
         <BarChart
           data={data}
