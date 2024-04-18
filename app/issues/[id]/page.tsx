@@ -7,6 +7,7 @@ import DeleteIssueButton from './DeleteIssueButton';
 import { getServerSession } from 'next-auth';
 import AssigneeSelect from './AssigneeSelect';
 import { cache } from 'react';
+import ChangeStatus from './ChangeStatus';
 
 interface Props {
   params: { id: string };
@@ -34,6 +35,7 @@ const IssueDetailPage = async ({ params }: Props) => {
           <Box>
             <Flex direction='column' gap='4'>
               <AssigneeSelect issue={issue} />
+              <ChangeStatus issue={issue} />
               <EditIssueButton issueId={issue.id} />
               <DeleteIssueButton issueId={issue.id} />
             </Flex>
@@ -43,6 +45,8 @@ const IssueDetailPage = async ({ params }: Props) => {
     )
   );
 };
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props) {
   const issue = await fetchIssue(parseInt(params.id));

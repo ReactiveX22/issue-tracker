@@ -8,9 +8,9 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  // const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
-  // if (!session) return NextResponse.json({}, { status: 401 });
+  if (!session) return NextResponse.json({}, { status: 401 });
 
   const body = await request.json();
 
@@ -48,6 +48,15 @@ export async function PATCH(
       assignedToUserId,
     },
   });
+
+  // if there is issue to update
+  if (body.status) {
+    const updatedIssue = await prisma.issue.update({
+      where: { id: parseInt(params.id) },
+      data: { status: body.status },
+    });
+    return NextResponse.json(updatedIssue, { status: 201 });
+  }
 
   return NextResponse.json(updatedIssue, { status: 201 });
 }
