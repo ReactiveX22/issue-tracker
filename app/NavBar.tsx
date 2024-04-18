@@ -39,7 +39,7 @@ const NavBar = () => {
 
 const NavLinks = () => {
   const links: Links[] = [
-    { label: 'Dashboard', href: '/' },
+    { label: 'Dashboard', href: '/dashboard' },
     { label: 'Issues', href: '/issues' },
   ];
 
@@ -50,7 +50,7 @@ const NavLinks = () => {
       {links.map((link) => (
         <li key={link.href}>
           <Link
-            className={cn('nav-link', {
+            className={cn('nav-link text-zinc-500', {
               'text-zinc-900': link.href === currentPath,
             })}
             href={link.href}
@@ -70,7 +70,7 @@ const AuthStatus = () => {
 
   if (status === 'unauthenticated')
     return (
-      <Link className='nav-link' href='/api/auth/signin'>
+      <Link className='nav-link font-medium' href='/api/auth/signin'>
         Sign In
       </Link>
     );

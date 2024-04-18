@@ -8,10 +8,13 @@
 
 body {
   color: rgb(var(--foreground-rgb));
+  -webkit-font-smoothing: antialised;
+  -moz-osx-font-feature-smoothing: grayscale;
+  -font-smooth: never;
 }
 
 @layer utilities {
   .nav-link {
-    @apply text-zinc-500 transition-colors hover:text-zinc-900;
+    @apply transition-colors hover:text-zinc-900;
   }
 }
