@@ -21,9 +21,10 @@ export default async function Home() {
   return (
     <Grid
       columns={{ initial: '1', md: '2' }}
-      className='space-x-3 space-y-3 px-2.5'
+      justify='between'
+      className='gap-3 px-2.5'
     >
-      <Flex direction='column' className='space-y-3'>
+      <Flex direction='column' className='space-y-3 md:w-[80%]'>
         <IssueSummary {...statusInfos} />
         <IssueChart {...statusInfos} />
       </Flex>
