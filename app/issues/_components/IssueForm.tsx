@@ -78,7 +78,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
-        <Button disabled={isSubmitting}>
+        <Button disabled={isSubmitting} className='-mt-3'>
           {issue ? 'Update Issue' : 'Submit Issue'}{' '}
           <Spinner loading={isSubmitting} />
         </Button>

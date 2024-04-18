@@ -15,7 +15,7 @@ const LatestIssues = async () => {
     },
   });
   return (
-    <Card className='px-0 pb-0 pt-4 shadow-sm'>
+    <Card className='px-0 pb-4 pt-4 shadow-sm'>
       <Heading size='4' mb='5' className='px-4 leading-3'>
         Latest Issues
       </Heading>

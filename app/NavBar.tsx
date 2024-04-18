@@ -28,7 +28,7 @@ interface Links {
 
 const NavBar = () => {
   return (
-    <nav className='mb-5 border-b px-5 py-3 shadow-md'>
+    <nav className='border-b px-5 py-3 shadow-md'>
       <Container>
         <Flex justify='between'>
           <Flex align='center' gap='3'>

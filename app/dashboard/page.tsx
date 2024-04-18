@@ -22,7 +22,7 @@ export default async function Home() {
     <Grid
       columns={{ initial: '1', md: '2' }}
       justify='between'
-      className='gap-3 px-2.5'
+      className='gap-3'
     >
       <Flex direction='column' className='space-y-3 md:w-[80%]'>
         <IssueSummary {...statusInfos} />
