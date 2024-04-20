@@ -142,16 +142,15 @@ const AuthStatus = () => {
           <DropdownMenu.Label>
             <Text size='2'>{session!.user!.email}</Text>
           </DropdownMenu.Label>
-          <Link href='/api/auth/signout'>
-            <DropdownMenu.Item
-              className='cursor-pointer'
-              disabled={isLoading}
-              onClick={() => logoutWithGoogle()}
-            >
-              {isLoading && <Spinner />}
-              <BiLogOut size={20} /> Log Out
-            </DropdownMenu.Item>
-          </Link>
+
+          <DropdownMenu.Item
+            className='cursor-pointer'
+            disabled={isLoading}
+            onClick={() => logoutWithGoogle()}
+          >
+            {isLoading && <Spinner />}
+            <BiLogOut size={20} /> Log Out
+          </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     </Box>
