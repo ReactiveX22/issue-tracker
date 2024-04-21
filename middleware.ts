@@ -24,7 +24,8 @@ export default withAuth(
     }
 
     if (!isAuth && isAccessingSensitiveRoute) {
-      return NextResponse.redirect(new URL('/api/auth/signin', req.url));
+      //TODO: make signin page
+      return NextResponse.redirect(new URL('/', req.url));
     }
   },
   {
