@@ -12,9 +12,10 @@ import {
   Spinner,
   Text,
 } from '@radix-ui/themes';
+import { Bug } from 'lucide-react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiLogOut } from 'react-icons/bi';
@@ -31,9 +32,9 @@ const NavBar = () => {
     <nav className='border-b px-5 py-3 shadow-md'>
       <Container>
         <Flex justify='between'>
-          <Flex align='center' gap='3'>
+          <Flex align='center' gap='5'>
             <Link href='/'>
-              <BsBugFill />
+              <Bug size={22} strokeWidth={1.5} />
             </Link>
             <NavLinks />
           </Flex>
@@ -45,25 +46,89 @@ const NavBar = () => {
 };
 
 const NavLinks = () => {
+  const { status, data: session } = useSession();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const currentPath = usePathname();
+  const router = useRouter();
+
   const links: Links[] = [
     { label: 'Dashboard', href: '/dashboard' },
     { label: 'Issues', href: '/issues' },
   ];
 
-  const currentPath = usePathname();
+  const loginWithGoogle = async () => {
+    setIsLoading(true);
+    try {
+      await signIn('google');
+    } catch (error) {
+      toast.error('Something went wrong with your login');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <ul className='flex space-x-6'>
       {links.map((link) => (
-        <li key={link.href}>
-          <Link
-            className={cn('nav-link text-zinc-500', {
-              'text-zinc-900': link.href === currentPath,
-            })}
-            href={link.href}
-          >
-            {link.label}
-          </Link>
+        <li key={link.href} className='flex items-center'>
+          {status === 'unauthenticated' ? (
+            <Dialog.Root>
+              {link.label !== 'Dashboard' ? (
+                <Dialog.Trigger>
+                  <Button
+                    variant='ghost'
+                    className={cn('nav-link text-zinc-500', {
+                      'text-zinc-900': link.href === currentPath,
+                    })}
+                  >
+                    {link.label}
+                  </Button>
+                </Dialog.Trigger>
+              ) : (
+                <Button
+                  variant='ghost'
+                  className={cn('nav-link text-zinc-500', {
+                    'text-zinc-900': link.href === currentPath,
+                  })}
+                  onClick={() => router.push(link.href)}
+                >
+                  {link.label}
+                </Button>
+              )}
+
+              <Dialog.Content maxWidth='450px'>
+                <Dialog.Title>Sign In</Dialog.Title>
+                <Dialog.Description size='2' mb='4'>
+                  Sign in with Google to get access.
+                </Dialog.Description>
+
+                <Flex gap='3' mt='4' justify='end'>
+                  <Dialog.Close>
+                    <Button variant='soft' color='gray'>
+                      Cancel
+                    </Button>
+                  </Dialog.Close>
+
+                  <Button
+                    onClick={() => loginWithGoogle()}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? <Spinner /> : <FaGoogle />} Sign In
+                  </Button>
+                </Flex>
+              </Dialog.Content>
+            </Dialog.Root>
+          ) : (
+            <Button
+              variant='ghost'
+              className={cn('nav-link text-zinc-500', {
+                'text-zinc-900': link.href === currentPath,
+              })}
+              onClick={() => router.push(link.href)}
+            >
+              {link.label}
+            </Button>
+          )}
         </li>
       ))}
     </ul>
@@ -96,7 +161,8 @@ const AuthStatus = () => {
     }
   };
 
-  if (status === 'loading') return <Skeleton width='3rem' />;
+  if (status === 'loading')
+    return <Skeleton width='4.334rem' height='1.8rem' />;
 
   if (status === 'unauthenticated')
     return (
@@ -106,7 +172,7 @@ const AuthStatus = () => {
         </Dialog.Trigger>
 
         <Dialog.Content maxWidth='450px'>
-          <Dialog.Title>Sign In</Dialog.Title>
+          <Dialog.Title className='leading-none'>Sign In</Dialog.Title>
           <Dialog.Description size='2' mb='4'>
             Sign in with Google to get access.
           </Dialog.Description>
